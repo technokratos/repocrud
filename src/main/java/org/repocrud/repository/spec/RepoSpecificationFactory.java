@@ -39,32 +39,6 @@ public class RepoSpecificationFactory {
             return filter;
         }
     }
-//    public static <T> Specification<T> getFilterSpecification(final Class<T> domainType, final T filterInstance, List<String> visibleProperties) {
-//        return (Specification<T>) (e, cq, cb) -> {
-//            Predicate[] predicates = visibleProperties.stream()
-//                    .map(propertyName -> getFilterPredicate(domainType, filterInstance, e, cb, propertyName))
-//                    .filter(Objects::nonNull)
-//                    .toArray(Predicate[]::new);
-//
-//            return addCompany(e, cb, predicates, domainType);
-//        };
-//    }
-//
-//    public static <T> Predicate addCompany(Root<T> e, CriteriaBuilder cb, Predicate[] predicates, Class<T> domainType) {
-//
-//        User userDetails = (User ) SecurityUtils.getUserDetails();
-//        if (userDetails.getCompany() != null
-////                && company != null
-//                && domainType.getSuperclass() == Auditable.class) {
-//            Path<T> company = e.get("company");
-//            Predicate filterByCompany = cb.equal(company, userDetails.getCompany());
-//            List<Predicate> withCompany = Arrays.asList(predicates);
-//            withCompany.add(filterByCompany);
-//            return cb.and(withCompany.toArray(new Predicate[withCompany.size()]));
-//        } else {
-//            return predicates.length == 1 ? predicates[0] : cb.and(predicates);
-//        }
-//    }
 
 
     static <T> Predicate
@@ -118,7 +92,7 @@ public class RepoSpecificationFactory {
     }
 
     public static <T> Specification<T> getCompanyRestriction(Company company) {
-        return (Specification<T>) (e, cq, cb) -> {
+        return (e, cq, cb) -> {
             try {
                 Path<T> companyPath = e.get("company");
                 return cb.or(cb.equal(companyPath, company), cb.isNull(companyPath));

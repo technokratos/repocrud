@@ -60,7 +60,7 @@ public class DemoApplication implements ApplicationRunner {
         server.setDatabasePath(0, "mem:mainDb");
         server.setDatabaseName(1, "standbyDb");
         server.setDatabasePath(1, "mem:standbyDb");
-        int port = 9001;
+        int port = 7001;
         server.setPort(port); // this is the default port
         server.start();
         // log.info("Start HSQL server {}:{}", port, "mainDb" );

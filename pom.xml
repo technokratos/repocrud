@@ -2,11 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>fiscal-container</artifactId>
-        <groupId>com.avtobar</groupId>
-        <version>1.10-SNAPSHOT</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.repocrud</groupId>
@@ -29,6 +24,7 @@
         <logback.version>1.2.3</logback.version>
         <slf4j.version>1.7.5</slf4j.version>
         <spring.boot.version>2.1.3.RELEASE</spring.boot.version>
+<!--        <spring.boot.version>2.4.2</spring.boot.version>-->
         <spring.version>5.1.4.RELEASE</spring.version>
         <objectdb.version>2.7.5_07</objectdb.version>
 
@@ -46,10 +42,20 @@
         <!--<url>file:///${project.basedir}/libs/dnd</url>-->
         <!--</repository>-->
         <repository>
+            <id>spring-releases</id>
+            <url>https://repo.spring.io/libs-release</url>
+        </repository>
+        <repository>
             <id>Vaadin Directory</id>
             <url>http://maven.vaadin.com/vaadin-addons</url>
         </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-releases</id>
+            <url>https://repo.spring.io/libs-release</url>
+        </pluginRepository>
+    </pluginRepositories>
 
 
     <dependencyManagement>
@@ -64,6 +70,7 @@
         </dependencies>
     </dependencyManagement>
 
+
     <dependencies>
         <dependency>
             <groupId>com.vaadin</groupId>
@@ -76,6 +83,11 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
             <version>${spring.boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
         </dependency>
 
 
@@ -104,13 +116,6 @@
                     <artifactId>slf4j-simple</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.vaadin.stefan</groupId>
-            <artifactId>dnd</artifactId>
-            <!--<version>1.0.2-DBK</version>-->
-            <version>1.0.2</version>
         </dependency>
 
         <dependency>
@@ -307,7 +312,11 @@
             <version>${spring.boot.version}</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>flow-server-production-mode</artifactId>
+            <version>1.1.0</version>
+        </dependency>
 
 
     </dependencies>
@@ -318,6 +327,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring.boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
         <resources>
@@ -413,31 +429,6 @@
                         <artifactId>flyway-maven-plugin</artifactId>
                         <version>${flyway-core.version}</version>
                     </plugin>
-                    <!--<plugin>-->
-                    <!--<groupId>org.apache.maven.plugins</groupId>-->
-                    <!--<artifactId>maven-install-plugin</artifactId>-->
-                    <!--<version>2.5</version>-->
-                    <!--<executions>-->
-                    <!--<execution>-->
-                    <!--<phase>initialize</phase>-->
-                    <!--<goals>-->
-                    <!--<goal>install-file</goal>-->
-                    <!--</goals>-->
-                    <!--<configuration>-->
-                    <!--<groupId>org.vaadin.stefan</groupId>-->
-                    <!--<artifactId>dnd</artifactId>-->
-                    <!--<version>1.0.2</version>-->
-                    <!--<packaging>jar</packaging>-->
-
-                    <!--<file>C:\Projects\binary\fiscaldriver\fiscal-server\libs\dnd\dnd-1.0.2.jar</file>-->
-                    <!--<file>C:\Projects\binary\fiscaldriver\fiscal-server\libs\dnd\dnd-1.0.2-sources.jar</file>-->
-                    <!--&lt;!&ndash;<file>${basedir}/lib/app.jar</file>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<file>${basedir}/libs/dnd/dnd-1.0.2.jar</file>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<systemPath>${project.basedir}/src/main/resources/dnd-1.0.2.jar</systemPath>&ndash;&gt;-->
-                    <!--</configuration>-->
-                    <!--</execution>-->
-                    <!--</executions>-->
-                    <!--</plugin>-->
                 </plugins>
             </build>
         </profile>
