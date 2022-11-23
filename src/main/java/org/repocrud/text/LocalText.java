@@ -1,23 +1,39 @@
 package org.repocrud.text;
 
+import com.vaadin.flow.component.notification.Notification;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Supplier;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 import org.repocrud.domain.Glossary;
 import org.repocrud.domain.Language;
 import org.repocrud.repository.GlossaryRepository;
 import org.repocrud.service.ApplicationContextProvider;
-import com.vaadin.flow.component.notification.Notification;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Pair;
-
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
 
 @Slf4j
 public class LocalText {
 
-    private static Map<Pair<String, Locale>, String> map = new ConcurrentHashMap<>();
+    private static final Map<Pair<String, Locale>, String> map = new ConcurrentHashMap<>();
 
     private static final GlossaryRepository GLOSSARY_REPOSITORY;
+
+    private static final Lock LOCK = new ReentrantLock(true);
+
+    private static final List<Glossary> glossaries = new ArrayList<>();
+
+    private static final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
 
     static {
 
@@ -25,26 +41,39 @@ public class LocalText {
         try {
             repository = (GlossaryRepository) ApplicationContextProvider.getRepository(Glossary.class);
             List<Glossary> all = repository.findAll();
-            all.forEach(glossary -> {
-                put(glossary.getKey(), glossary.getValue(), glossary.getLanguage());
-            });
+            all.forEach(glossary -> put(glossary.getKey(), glossary.getValue(), glossary.getLanguage()));
         } catch (Exception e) {
             log.error("Error in load glossary repository", e);
         }
 
         GLOSSARY_REPOSITORY = repository;
+        if (GLOSSARY_REPOSITORY != null) {
+            service.scheduleAtFixedRate(() -> {
+                LOCK.lock();
+                try {
+                    GLOSSARY_REPOSITORY.saveAllAndFlush(glossaries);
+                    glossaries.clear();
+                } catch (Exception e) {
+                    log.error("Error in saving glossaries", e);
+                } finally {
+                    LOCK.unlock();
+                }
+
+            }, 0, 1, TimeUnit.SECONDS);
+        }
 
     }
+
     //    ResourceBundle bundle = ResourceBundle.getBundle("repocrud", Locale.getDefault(), new UTF8Control());
     //    private static ResourceBundle resources = ResourceBundle.getBundle("repocrud", Locale.getDefault());
-    private static ResourceBundle resources = ResourceBundle.getBundle("repocrud", Locale.getDefault(), new UTF8Control());
+    private static final ResourceBundle resources = ResourceBundle.getBundle("repocrud", Locale.getDefault(), new UTF8Control());
 
 
-    public static String text(Class domain, String key, Object... params) {
+    public static String text(Class<?> domain, String key, Object... params) {
         return getResourceWithDefaultValue(domain.getSimpleName() + "." + key, params, () -> key);
     }
 
-    public static String text(Class domain, Class nested, String key, Object... params) {
+    public static String text(Class<?> domain, Class<?> nested, String key, Object... params) {
         return getResourceWithDefaultValue(domain.getSimpleName() + "." + nested.getSimpleName() + "." + key, params, () -> key);
     }
 
@@ -77,10 +106,9 @@ public class LocalText {
                 resourceText = getTextFromProperties(key, defaultSupplier);
             }
             map.put(localePair, resourceText);
-
-            return (params != null && params.length >0 ) ? format(params, resourceText) : resourceText;
+            return (params != null && params.length > 0) ? format(params, resourceText) : resourceText;
         } else {
-            return (params != null && params.length >0) ? format(params, text) : text;
+            return (params != null && params.length > 0) ? format(params, text) : text;
         }
     }
 
@@ -99,13 +127,18 @@ public class LocalText {
 
     public static String getTextFormRepository(String key, Supplier<String> defaultSupplier) {
         String resourceText;
-        resourceText = GLOSSARY_REPOSITORY.getText(key);
-        if (resourceText == null) {
-            resourceText = defaultSupplier.get();
-            Glossary glossary = new Glossary(null, GLOSSARY_REPOSITORY.getLanguage(), key, resourceText);
-            GLOSSARY_REPOSITORY.saveAndFlush(glossary);
+        LOCK.lock();
+        try {
+            resourceText = GLOSSARY_REPOSITORY.getText(key);
+            if (resourceText == null) {
+                resourceText = defaultSupplier.get();
+                Glossary glossary = new Glossary(null, GLOSSARY_REPOSITORY.getLanguage(), key, resourceText);
+                glossaries.add(glossary);
+            }
+            return resourceText;
+        } finally {
+            LOCK.unlock();
         }
-        return resourceText;
     }
 
     public static String getTextFromProperties(String key, Supplier<String> defaultSupplier) {
@@ -123,13 +156,13 @@ public class LocalText {
 
     public static void put(String key, String value, Language language) {
         try {
-            map.put(Pair.of(key, (language== null) ? Language.RUSSIAN.getLocale(): language.getLocale()), value);
+            map.put(Pair.of(key, (language == null) ? Language.RUSSIAN.getLocale() : language.getLocale()), value);
         } catch (NullPointerException e) {
             log.error("Error in load keys {},{}, {}", key, value, language);
         }
     }
 
-    static boolean save(Class domain, String key, String text) {
+    static boolean save(Class<?> domain, String key, String text) {
         if (GLOSSARY_REPOSITORY == null) {
             return false;
         }

@@ -1,18 +1,17 @@
 package org.repocrud.crud;
 
-import org.repocrud.domain.SmtpSettings;
-import org.repocrud.repository.SmtpSettingsRepository;
-import org.repocrud.service.SmtpFactoryService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
+import org.repocrud.domain.SmtpSettings;
+import org.repocrud.repository.SmtpSettingsRepository;
+import org.repocrud.service.SmtpFactoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.repocrud.text.LocalText.text;
 
@@ -23,7 +22,7 @@ import static org.repocrud.text.LocalText.text;
 @Slf4j
 @UIScope
 @SpringComponent
-public class SettingsCrudContainer extends AbstractCrudContainer<SmtpSettings, Long> {
+public class SmtpSettingsCrudContainer extends AbstractCrudContainer<SmtpSettings, Long> {
 
     @Autowired
     private SmtpSettingsRepository repository;
@@ -57,7 +56,7 @@ public class SettingsCrudContainer extends AbstractCrudContainer<SmtpSettings, L
             return count;
         });
         Grid.Column<SmtpSettings> settingsColumn = crud.getGrid().addComponentColumn(this::getTestButton);
-        settingsColumn.setHeader(text(SettingsCrudContainer.class, "check"));
+        settingsColumn.setHeader(text(SmtpSettingsCrudContainer.class, "check"));
 
     }
 
@@ -67,9 +66,9 @@ public class SettingsCrudContainer extends AbstractCrudContainer<SmtpSettings, L
 
             boolean test = smtpFactoryService.sendWarning("test", smtpSettings);
             if (test) {
-                Notification.show(text(SettingsCrudContainer.class, "sentTestMessage"));
+                Notification.show(text(SmtpSettingsCrudContainer.class, "sentTestMessage"));
             } else {
-                Notification.show(text(SettingsCrudContainer.class, "failedConnection"));
+                Notification.show(text(SmtpSettingsCrudContainer.class, "failedConnection"));
             }
         });
         return button;

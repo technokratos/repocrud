@@ -1,27 +1,28 @@
 package org.repocrud.crud;
 
-import org.repocrud.annotations.CheckBoxCollection;
-import org.repocrud.annotations.SortInList;
-import org.repocrud.components.DateField;
-import org.repocrud.components.EnumCollectionField;
-import org.repocrud.components.ZonedDateTimeField;
-import org.repocrud.service.ApplicationContextProvider;
 import com.vaadin.flow.component.HasValueAndElement;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.textfield.TextField;
-import org.springframework.data.domain.Sort;
-import org.vaadin.crudui.form.FieldProvider;
-
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import org.repocrud.annotations.CheckBoxCollection;
+import org.repocrud.annotations.SortInList;
+import org.repocrud.components.DateField;
+import org.repocrud.components.EnumCollectionField;
+import org.repocrud.service.ApplicationContextProvider;
+import org.springframework.data.domain.Sort;
+import org.vaadin.crudui.form.FieldProvider;
 
 /**
  * @author @author Denis B. Kulikov
@@ -30,7 +31,7 @@ public class UpdateFieldProvider implements FieldProvider {
 
 
     private final Field field;
-    private Class<?> type;
+    private final Class<?> type;
 
     public UpdateFieldProvider(Class<?> type, Field field) {
         this.type = type;
@@ -38,7 +39,7 @@ public class UpdateFieldProvider implements FieldProvider {
     }
 
     @Override
-    public HasValueAndElement buildField() {
+    public HasValueAndElement buildField(Object o) {
 
         if (Boolean.class.isAssignableFrom(type) || boolean.class == type) {
             return new Checkbox();
@@ -61,12 +62,12 @@ public class UpdateFieldProvider implements FieldProvider {
         }
 
         Annotation[] annotations = type.getAnnotations();
-        if (Stream.of(annotations).anyMatch(a-> a instanceof Entity)) {
+        if (Stream.of(annotations).anyMatch(a -> a instanceof Entity)) {
             Optional<Annotation> sort = Stream.of(annotations).filter(annotation -> annotation instanceof SortInList).findFirst();
             final List all;
             if (sort.isPresent()) {
                 SortInList sortInList = (SortInList) sort.get();
-                all = ApplicationContextProvider.getRepository(type).findAll(Sort.by( sortInList.direction(), sortInList.value()));
+                all = ApplicationContextProvider.getRepository(type).findAll(Sort.by(sortInList.direction(), sortInList.value()));
             } else {
                 all = ApplicationContextProvider.getRepository(type).findAll();
             }
@@ -78,7 +79,7 @@ public class UpdateFieldProvider implements FieldProvider {
             Optional<Annotation> elementAnnotation = Stream.of(fieldAnnotation).filter(annotation -> annotation instanceof ElementCollection).findFirst();
             Optional<Annotation> entityAnnotation = Stream.of(fieldAnnotation).filter(annotation -> annotation instanceof CheckBoxCollection).findFirst();
             if (elementAnnotation.isPresent() && entityAnnotation.isPresent()) {
-                return new EnumCollectionField( ((ElementCollection)elementAnnotation.get()).targetClass(), (CheckBoxCollection) entityAnnotation.get());
+                return new EnumCollectionField(((ElementCollection) elementAnnotation.get()).targetClass(), (CheckBoxCollection) entityAnnotation.get());
             }
 
         }

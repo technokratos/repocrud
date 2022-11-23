@@ -1,12 +1,11 @@
 package org.repocrud.config;
 
 import javax.sql.DataSource;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
-import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 /**
@@ -17,22 +16,27 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 @Configuration
 public class DataSourceConfig {
 
+    @Value("${spring.datasource.driverClassName}")
+    private String driverClassName;
 
-    @Autowired
-    Environment env;
+    @Value("${app.datasource.url}")
+    private String url;
 
-//    @Autowired
-//    private Server server;
+    @Value("${app.datasource.username}")
+    private String username;
+
+    @Value("${app.datasource.password}")
+    private String password;
 
     @Primary
     @Bean
     public DataSource customDataSource() {
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getProperty("app.datasource.driver-class-name"));
-        dataSource.setUrl(env.getProperty("app.datasource.url"));
-        dataSource.setUsername(env.getProperty("app.datasource.username"));
-        dataSource.setPassword(env.getProperty("app.datasource.password"));
+        dataSource.setDriverClassName(driverClassName);
+        dataSource.setUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
 
         return dataSource;
 

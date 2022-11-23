@@ -1,21 +1,29 @@
 package org.repocrud.domain;
 
-import org.repocrud.components.Identifiable;
-import org.repocrud.history.Auditable;
-import org.repocrud.repository.converters.AuthorityListToStringConverter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
+import org.repocrud.history.Auditable;
+import org.repocrud.repository.converters.AuthorityListToStringConverter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.persistence.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Data
@@ -23,9 +31,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldNameConstants
-public class User extends Auditable implements UserDetails{
-
-
+@Builder
+public class User extends Auditable implements UserDetails {
 
     @Column(unique = true)
     private String username;
@@ -33,7 +40,14 @@ public class User extends Auditable implements UserDetails{
     @JsonIgnore
     private String password;
 
+    @NotNull
+    @Email
+    private String email;
+
     private boolean enabled = true;
+
+    @ElementCollection
+    private List<String> roles;
 
     @Convert(converter = AuthorityListToStringConverter.class)
     private List<GrantedAuthority> authorities;
@@ -56,11 +70,9 @@ public class User extends Auditable implements UserDetails{
     public User(String username, String encodedPassword, List<SimpleGrantedAuthority> authorities) {
         this.username = username;
         this.password = encodedPassword;
-        this.locale = Language.RUSSIAN;
         this.authorities = authorities.stream()
                 .map(a -> (GrantedAuthority) a)
                 .collect(Collectors.toList());
-//        this.authorities = authorities.stream().map(SimpleGrantedAuthority::getAuthority).collect(Collectors.joining(";"));
 
     }
 
@@ -76,6 +88,6 @@ public class User extends Auditable implements UserDetails{
 
     @Override
     public String toString() {
-        return  username ;
+        return username;
     }
 }

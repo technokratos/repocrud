@@ -1,4 +1,4 @@
-package org.repocrud.ui.components;
+package org.repocrud.views.components;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.icon.VaadinIcon;

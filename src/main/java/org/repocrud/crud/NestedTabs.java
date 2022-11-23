@@ -11,25 +11,29 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.data.selection.SelectionEvent;
 import com.vaadin.flow.data.selection.SelectionListener;
+import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import lombok.extern.slf4j.Slf4j;
 import org.repocrud.annotations.NestedEntity;
 import org.repocrud.annotations.NestedView;
 import org.repocrud.history.Auditable;
 import org.repocrud.history.Identified;
 import org.repocrud.service.ApplicationContextProvider;
-import org.repocrud.ui.components.TabContainer;
+import org.repocrud.views.components.TabContainer;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.vaadin.crudui.layout.CrudLayout;
-
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import java.lang.reflect.Field;
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.repocrud.text.LocalText.text;
 
@@ -116,7 +120,7 @@ public class NestedTabs<T> extends Composite<Div> implements SelectionListener<G
         });
     }
 
-    public RepositoryCrud getCrud(String property){
+    public RepositoryCrud getCrud(String property) {
         return crudMap.get(property);
     }
 
@@ -126,7 +130,7 @@ public class NestedTabs<T> extends Composite<Div> implements SelectionListener<G
             return specificationExecutor.findAll((Specification) (e, cq, cb) -> cb.equal(e.get(description.getForeignField().getName()), description.getId()));
             //return repository.findAll(Example.of(description.getFilterButton()));
         } catch (Exception e) {
-            log.error("Error in find nested entities " + description , e);
+            log.error("Error in find nested entities " + description, e);
             return Collections.emptyList();
         }
     }
@@ -227,7 +231,7 @@ public class NestedTabs<T> extends Composite<Div> implements SelectionListener<G
             Field foreignField = getForeignField(type);
 
             foreignField.set(exampleFilter, main);
-            Long id = main instanceof Identified ? ((Identified) main).getId(): null;
+            Long id = main instanceof Identified ? ((Identified) main).getId() : null;
             return new ForiegnKey(exampleFilter, foreignField, id);
         } catch (InstantiationException | IllegalAccessException e) {
             log.error("Error in new instance ", e);
@@ -251,7 +255,7 @@ public class NestedTabs<T> extends Composite<Div> implements SelectionListener<G
     private String getForeignKeyFieldName() {
         String name = parentType.getSimpleName();
         char c = name.charAt(0);
-        return  Character.toLowerCase(c) + name.substring(1, name.length()  );
+        return Character.toLowerCase(c) + name.substring(1, name.length());
     }
 
     public void attach(RepositoryCrud crud) {

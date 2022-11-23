@@ -1,22 +1,17 @@
-package org.repocrud.ui;
+package org.repocrud;
 
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouterLayout;
-import com.vaadin.flow.theme.Theme;
-import com.vaadin.flow.theme.lumo.Lumo;
+import javax.annotation.PostConstruct;
+import javax.annotation.security.PermitAll;
 import lombok.extern.slf4j.Slf4j;
 import org.repocrud.crud.CompanyCrudContainer;
 import org.repocrud.crud.GlossaryCrudContainer;
-import org.repocrud.crud.SettingsCrudContainer;
+import org.repocrud.crud.SmtpSettingsCrudContainer;
 import org.repocrud.crud.UserRepositoryCrud;
-import org.repocrud.ui.components.TabContainer;
+import org.repocrud.views.components.TabContainer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
-
-import javax.annotation.PostConstruct;
 
 import static org.repocrud.text.LocalText.text;
 
@@ -26,22 +21,19 @@ import static org.repocrud.text.LocalText.text;
  * date: 18.03.2019:12:02<br/>
  */
 @Slf4j
-//@Profile("demo")
-@Route(LoginForm.MAIN)
-@Theme(value = Lumo.class, variant = Lumo.LIGHT)
+@PermitAll
+@Route("demo")
 public class DemoMain extends HorizontalLayout {
 
 
     @Autowired
     UserRepositoryCrud userRepositoryCrud;
     @Autowired
-    private SettingsCrudContainer settingsCrud;
-    @Autowired
     private CompanyCrudContainer companyCrud;
     @Autowired
     private GlossaryCrudContainer glossaryCrud;
     @Autowired
-    private SettingsCrudContainer settingsCrudContainer;
+    private SmtpSettingsCrudContainer smtpSettingsCrudContainer;
 
     @PostConstruct
     private void init() {
@@ -50,7 +42,7 @@ public class DemoMain extends HorizontalLayout {
         mainMenu.addTab(text("main.user"), userRepositoryCrud);
         mainMenu.addTab(text("main.company"), companyCrud);
         mainMenu.addTab(text("main.glossary"), glossaryCrud);
-        mainMenu.addTab(text("main.smpt" ), settingsCrudContainer);
+        mainMenu.addTab(text("main.smpt"), smtpSettingsCrudContainer);
         add(mainMenu);
     }
 }

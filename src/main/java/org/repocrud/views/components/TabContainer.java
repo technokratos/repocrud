@@ -1,7 +1,9 @@
-package org.repocrud.ui.components;
+package org.repocrud.views.components;
 
-import org.repocrud.crud.RefreshableComponent;
-import com.vaadin.flow.component.*;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -9,16 +11,21 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.repocrud.crud.RefreshableComponent;
 
-import java.util.*;
-
-public class TabContainer extends Composite<Div> implements RefreshableComponent{
+public class TabContainer extends Composite<Div> implements RefreshableComponent {
 
     private final Tabs.Orientation orientation;
     private final Tabs tabs;
     private final HasComponents layout;
     private final Map<String, Component> map = new HashMap<>();
-    private List<ComponentEventListener<Tabs.SelectedChangeEvent>> listeners = new ArrayList<>();
+    private final List<ComponentEventListener<Tabs.SelectedChangeEvent>> listeners = new ArrayList<>();
 
     private TabContainer parentTab = null;
     private final Set<RefreshableComponent> onceRefreshed;
@@ -62,11 +69,7 @@ public class TabContainer extends Composite<Div> implements RefreshableComponent
     }
 
     public Tab addTab(String title, Component component) {
-        if (map.isEmpty()) {
-            component.setVisible(true);
-        } else {
-            component.setVisible(false);
-        }
+        component.setVisible(map.isEmpty());
         Tab tab = new Tab(title);
         //todo on the last tab and tested tabs the grid overlays the header, without it
         component.getElement().getStyle().set("padding", "20px");
@@ -89,21 +92,16 @@ public class TabContainer extends Composite<Div> implements RefreshableComponent
     }
 
     public void addTab(VaadinIcon icon, String title, TabContainer chileTab) {
-        addTab(icon, title, (Component)chileTab);
+        addTab(icon, title, (Component) chileTab);
         chileTab.setParentTab(this);
     }
+
     public void addTab(VaadinIcon icon, String title, Component component) {
-        if (map.isEmpty()) {
-            component.setVisible(true);
-        } else {
-            component.setVisible(false);
-        }
+        component.setVisible(map.isEmpty());
 
         Tab tab = new Tab(icon.create(), new Label(title));
 
-        //tab.setLabel(title);
         addTab(component, tab);
-        return;
     }
 
     @Override

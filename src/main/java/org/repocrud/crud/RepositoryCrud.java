@@ -1,18 +1,5 @@
 package org.repocrud.crud;
 
-import org.repocrud.config.SecurityUtils;
-import org.repocrud.annotations.CheckBoxCollection;
-import org.repocrud.annotations.EnableGroupUpdate;
-import org.repocrud.components.Identifiable;
-import org.repocrud.components.dialogs.ConfirmDialog;
-import org.repocrud.domain.User;
-import org.repocrud.history.Auditable;
-import org.repocrud.repository.CommonRepository;
-import org.repocrud.repository.spec.RepoSpecificationFactory;
-import org.repocrud.service.ApplicationContextProvider;
-import org.repocrud.text.HelpTools;
-import org.repocrud.tools.PropertyTools;
-import org.repocrud.ui.components.TabContainer;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
@@ -34,9 +21,45 @@ import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.provider.SortDirection;
 import com.vaadin.flow.data.selection.SelectionListener;
 import com.vaadin.flow.function.ValueProvider;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.sql.SQLException;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.persistence.OneToOne;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Path;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.tuple.Pair;
+import org.repocrud.annotations.CheckBoxCollection;
+import org.repocrud.annotations.EnableGroupUpdate;
+import org.repocrud.components.Identifiable;
+import org.repocrud.components.dialogs.ConfirmDialog;
+import org.repocrud.config.SecurityUtils;
+import org.repocrud.domain.User;
+import org.repocrud.history.Auditable;
+import org.repocrud.repository.CommonRepository;
+import org.repocrud.repository.spec.RepoSpecificationFactory;
+import org.repocrud.service.ApplicationContextProvider;
+import org.repocrud.text.HelpTools;
+import org.repocrud.tools.PropertyTools;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
@@ -52,27 +75,8 @@ import org.vaadin.crudui.crud.CrudOperationException;
 import org.vaadin.crudui.crud.impl.GridCrud;
 import org.vaadin.crudui.form.CrudFormConfiguration;
 
-import javax.persistence.OneToOne;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Path;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.sql.SQLException;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static org.repocrud.text.LocalText.text;
 import static java.lang.String.format;
-
-;
+import static org.repocrud.text.LocalText.text;
 
 @Slf4j
 @StyleSheet("frontend://context.css")
@@ -85,18 +89,18 @@ public class RepositoryCrud<T, ID> extends GridCrud<T> implements DependentView,
     private int page = 0;
     private int pageSize = 25;
     private Sort.Direction sortDirection = Sort.Direction.ASC;
-    private String[] sortProperties = new String[]{"id"};
+    private String[] sortProperties = new String[]{ "id" };
     private final Button buttonLeft;
     private final Label pageState;
     private final Button buttonRight;
     private final Button filter;
     private Button exportButton;
-    private Checkbox multiSelect;
+    private final Checkbox multiSelect;
     private NestedTabs<T> nestedTabs = null;
 
     private Supplier<Long> pageCountSupplier;
-    private TabContainer tabContainer = null;
-    private List<RefreshListener> refreshListeners = new ArrayList<>();
+
+    private final List<RefreshListener> refreshListeners = new ArrayList<>();
     private GridContextMenu<T> contextMenu;
     private T filterInstance;
 
@@ -104,7 +108,7 @@ public class RepositoryCrud<T, ID> extends GridCrud<T> implements DependentView,
     private boolean enableDelete = true;
     private boolean enableUpdate = true;
 
-    private Map<Class<?>, List<Field>> oneToOneCache = new HashMap<>();
+    private final Map<Class<?>, List<Field>> oneToOneCache = new HashMap<>();
 
 
     public RepositoryCrud(JpaRepository<T, ID> repository, RepositoryCrudFormFactory<T> crudFormFactory, ForiegnKey description) {

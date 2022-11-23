@@ -1,11 +1,5 @@
 package org.repocrud.crud;
 
-import org.repocrud.config.SecurityUtils;
-import org.repocrud.components.dialogs.ConfirmDialog;
-import org.repocrud.domain.CrudHistory;
-import org.repocrud.domain.User;
-import org.repocrud.repository.CrudHistoryRepository;
-import org.repocrud.repository.UserRepository;
 import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasValue;
@@ -19,17 +13,22 @@ import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+import java.util.Collections;
+import java.util.Set;
+import javax.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.repocrud.components.dialogs.ConfirmDialog;
+import org.repocrud.config.SecurityUtils;
+import org.repocrud.domain.CrudHistory;
+import org.repocrud.domain.User;
+import org.repocrud.repository.CrudHistoryRepository;
+import org.repocrud.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.vaadin.crudui.crud.CrudOperation;
-
-import javax.annotation.PostConstruct;
-import java.util.Collections;
-import java.util.Set;
 
 import static org.repocrud.text.LocalText.text;
 
@@ -41,9 +40,9 @@ import static org.repocrud.text.LocalText.text;
 public class UserRepositoryCrud extends AbstractCrudContainer<User, Long> {
 
     public static final int DURATION = 1000;
-    public static final String[] HIDE_FIELDS = {"id", "password", "authorities", "locale", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"};
-    private static final String[] VISIBLE_FIELDS_WITH_COMPANY = {"username", "enabled", "company"};
-    private static final String[] VISIBLE_FIELDS = {"username", "enabled", "company"};
+    public static final String[] HIDE_FIELDS = { "id", "password", "authorities", "locale", "accountNonExpired", "accountNonLocked", "credentialsNonExpired" };
+    private static final String[] VISIBLE_FIELDS_WITH_COMPANY = { "username", "enabled", "company" };
+    private static final String[] VISIBLE_FIELDS = { "username", "enabled", "company" };
     @Autowired
     private UserRepository repository;
 
@@ -82,17 +81,9 @@ public class UserRepositoryCrud extends AbstractCrudContainer<User, Long> {
         });
 
         resetPassword.setEnabled(false);
-        crud.getGrid().addSelectionListener(selectionEvent -> {
-            if (selectionEvent.getAllSelectedItems().size() == 1) {
-                resetPassword.setEnabled(true);
-            } else {
-                resetPassword.setEnabled(false);
-            }
-        });
+        crud.getGrid().addSelectionListener(selectionEvent -> resetPassword.setEnabled(selectionEvent.getAllSelectedItems().size() == 1));
 
-        resetPassword.addClickListener(buttonClickEvent -> {
-            changePassword();
-        });
+        resetPassword.addClickListener(buttonClickEvent -> changePassword());
         crud.addContextMenuItem(text(User.class, "resetPassword"), VaadinIcon.PASSWORD.create(), user -> changePassword(), "resetPassword");
         initHistory(crud);
 
@@ -105,7 +96,7 @@ public class UserRepositoryCrud extends AbstractCrudContainer<User, Long> {
             User currentUser = repository.findByUsernameIgnoreCase(SecurityUtils.getUsername());
             if (currentUser.getUsername().equals(user.getUsername()) ||
                     (currentUser.getAuthorities() != null &&
-                    currentUser.getAuthorities().stream().anyMatch(grantedAuthority -> "admin".equals( grantedAuthority.getAuthority())))) {
+                            currentUser.getAuthorities().stream().anyMatch(grantedAuthority -> "admin".equals(grantedAuthority.getAuthority())))) {
                 new ResetPasswordDialogAdapter(user).open();
             } else {
                 Notification.show(text(UserRepositoryCrud.class, "noRightsToChange"), DURATION, Notification.Position.MIDDLE);
@@ -115,8 +106,6 @@ public class UserRepositoryCrud extends AbstractCrudContainer<User, Long> {
 
     private void initHistory(RepositoryCrud<User, Long> crud) {
         RepositoryCrudFormFactory<CrudHistory> historyFormFactory = new RepositoryCrudFormFactory<>(CrudHistory.class);
-
-
 
 
         historyFormFactory.hideVisibleProperties("id", "body");
@@ -131,7 +120,7 @@ public class UserRepositoryCrud extends AbstractCrudContainer<User, Long> {
 
         historyCrud.getCrudLayout().addToolbarComponent(domainTypes);
 
-        historyCrud.getGrid().setItemDetailsRenderer(new ComponentRenderer<Component, CrudHistory>() {
+        historyCrud.getGrid().setItemDetailsRenderer(new ComponentRenderer<>() {
             @Override
             public Component createComponent(CrudHistory item) {
                 return new Label(item.getBody() != null ? item.getBody() : "");
@@ -142,13 +131,13 @@ public class UserRepositoryCrud extends AbstractCrudContainer<User, Long> {
         historyCrud.setUpdateOperationVisible(false);
         historyCrud.setDeleteOperationVisible(false);
         historyCrud.setFindAllOperationVisible(false);
-        historyCrud.setDeleteOperation(crudHistory -> {});
+        historyCrud.setDeleteOperation(crudHistory -> {
+        });
         historyCrud.setUpdateOperation(crudHistory -> crudHistory);
         historyCrud.setAddOperation(crudHistory -> crudHistory);
 
 
-
-        historyCrud.setFindAllOperation(() ->  {
+        historyCrud.setFindAllOperation(() -> {
             Set<User> selectedItems = crud.getGrid().getSelectedItems();
             if (selectedItems.size() == 1) {
                 User selected = selectedItems.iterator().next();
@@ -246,12 +235,8 @@ public class UserRepositoryCrud extends AbstractCrudContainer<User, Long> {
         return value == null || value.length() < 4;
     }
 
-    @AllArgsConstructor
-    private class EqualsPassword implements HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<PasswordField, String>> {
-        private final PasswordField passwordField;
-        private final PasswordField second;
-
-
+    private record EqualsPassword(PasswordField passwordField,
+                                  PasswordField second) implements HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<PasswordField, String>> {
         @Override
         public void valueChanged(AbstractField.ComponentValueChangeEvent<PasswordField, String> e) {
 

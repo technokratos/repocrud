@@ -1,13 +1,13 @@
 package org.repocrud.text;
 
-import org.repocrud.config.SecurityUtils;
-import org.repocrud.components.HtmlText;
-import org.repocrud.components.dialogs.ConfirmDialog;
-import org.repocrud.domain.User;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import org.repocrud.components.HtmlText;
+import org.repocrud.components.dialogs.ConfirmDialog;
+import org.repocrud.config.SecurityUtils;
+import org.repocrud.domain.User;
 import org.vaadin.pekka.WysiwygE;
 
 import static org.repocrud.text.LocalText.text;
@@ -18,7 +18,7 @@ import static org.repocrud.text.LocalText.text;
  */
 public class HelpTools {
 
-    public static Button addHelpButton(Class domain, String key) {
+    public static Button addHelpButton(Class<?> domain, String key) {
         String helpKey = "help." + key;
         Button button = new Button(VaadinIcon.QUESTION.create());
         button.addClickListener(buttonClickEvent -> {
@@ -53,9 +53,7 @@ public class HelpTools {
                 dialog = new Dialog(htmlText, closeButton);
             }
 
-            closeButton.addClickListener(e -> {
-                dialog.close();
-            });
+            closeButton.addClickListener(e -> dialog.close());
             dialog.open();
 
         });
