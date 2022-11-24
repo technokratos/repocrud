@@ -84,7 +84,7 @@ public class RepositoryCrud<T, ID> extends GridCrud<T> implements DependentView,
     public static final String SINGLE_PREFIX = "single";
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy-HH:mm");
     private final JpaRepository<T, ID> repository;
-    private ForiegnKey<T> foriegnKey = null;
+    private ForeignKey<T> foreignKey = null;
 
     private int page = 0;
     private int pageSize = 25;
@@ -111,10 +111,10 @@ public class RepositoryCrud<T, ID> extends GridCrud<T> implements DependentView,
     private final Map<Class<?>, List<Field>> oneToOneCache = new HashMap<>();
 
 
-    public RepositoryCrud(JpaRepository<T, ID> repository, RepositoryCrudFormFactory<T> crudFormFactory, ForiegnKey description) {
+    public RepositoryCrud(JpaRepository<T, ID> repository, RepositoryCrudFormFactory<T> crudFormFactory, ForeignKey description) {
         this(repository, crudFormFactory);
-        this.foriegnKey = description;
-        pageCountSupplier = () -> (foriegnKey != null && foriegnKey.getFilter() != null) ? countByForeignKey() : countWithFilter();
+        this.foreignKey = description;
+        pageCountSupplier = () -> (foreignKey != null && foreignKey.getFilter() != null) ? countByForeignKey() : countWithFilter();
     }
 
     private long countWithFilter() {
@@ -139,9 +139,9 @@ public class RepositoryCrud<T, ID> extends GridCrud<T> implements DependentView,
             JpaSpecificationExecutor specificationExecutor = (JpaSpecificationExecutor) repository;
             CrudFormConfiguration configuration = ((RepositoryCrudFormFactory) getCrudFormFactory()).getConfiguration(CrudOperation.READ);
             List<String> visibleProperties = configuration.getVisibleProperties();
-            return specificationExecutor.count(RepoSpecificationFactory.getFilterSpecification(domainType, filterInstance, visibleProperties, foriegnKey));
+            return specificationExecutor.count(RepoSpecificationFactory.getFilterSpecification(domainType, filterInstance, visibleProperties, foreignKey));
         } catch (Exception e) {
-            log.error("Error in count nested entities " + foriegnKey, e);
+            log.error("Error in count nested entities " + foreignKey, e);
             return 0;
         }
     }
@@ -617,8 +617,8 @@ public class RepositoryCrud<T, ID> extends GridCrud<T> implements DependentView,
         });
     }
 
-    void setForiegnKey(ForiegnKey description) {
-        this.foriegnKey = description;
+    void setForiegnKey(ForeignKey description) {
+        this.foreignKey = description;
     }
 
 
@@ -797,15 +797,15 @@ public class RepositoryCrud<T, ID> extends GridCrud<T> implements DependentView,
         public Collection<T> findAll() {
             final PageRequest pageRequest = getPageRequest();
 
-            if (foriegnKey != null && foriegnKey.getFilter() != null) {
+            if (foreignKey != null && foreignKey.getFilter() != null) {
                 try {
                     CrudFormConfiguration configuration = ((RepositoryCrudFormFactory) getCrudFormFactory()).getConfiguration(CrudOperation.READ);
                     List<String> visibleProperties = configuration.getVisibleProperties();
                     JpaSpecificationExecutor repository = (JpaSpecificationExecutor) RepositoryCrud.this.repository;
-                    return repository.findAll(RepoSpecificationFactory.getFilterSpecification(domainType, filterInstance, visibleProperties, foriegnKey), pageRequest).getContent();
+                    return repository.findAll(RepoSpecificationFactory.getFilterSpecification(domainType, filterInstance, visibleProperties, foreignKey), pageRequest).getContent();
 
                 } catch (Exception e) {
-                    log.error("Error in load nested entities " + foriegnKey, e);
+                    log.error("Error in load nested entities " + foreignKey, e);
                     return Collections.emptyList();
                 }
             }
@@ -824,8 +824,8 @@ public class RepositoryCrud<T, ID> extends GridCrud<T> implements DependentView,
 
         @Override
         public T add(T t) {
-            if (foriegnKey != null) {
-                foriegnKey.initForeignKey(t);
+            if (foreignKey != null) {
+                foreignKey.initForeignKey(t);
             }
             return saveAndFlush(t);
         }

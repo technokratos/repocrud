@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @ToString
 @AllArgsConstructor
-public class ForiegnKey<T> {
+public class ForeignKey<T> {
     private final T filter;
     private final Field foreignField;
     private final UUID id;

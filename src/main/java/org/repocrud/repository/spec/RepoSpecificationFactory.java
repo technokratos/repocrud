@@ -11,7 +11,7 @@ import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.repocrud.config.SecurityUtils;
-import org.repocrud.crud.ForiegnKey;
+import org.repocrud.crud.ForeignKey;
 import org.repocrud.domain.Company;
 import org.repocrud.domain.User;
 import org.repocrud.history.Auditable;
@@ -69,16 +69,16 @@ public class RepoSpecificationFactory {
         return null;
     }
 
-    public static <T> Specification getForeignKeySpecification(ForiegnKey<T> foriegnKey) {
-        return (e, cq, cb) -> getForiegnKeyEqual(foriegnKey, e, cb);
+    public static <T> Specification getForeignKeySpecification(ForeignKey<T> foreignKey) {
+        return (e, cq, cb) -> getForiegnKeyEqual(foreignKey, e, cb);
     }
 
-    private static <T> Predicate getForiegnKeyEqual(ForiegnKey<T> foriegnKey, Root e, CriteriaBuilder cb) {
-        return cb.equal(e.get(foriegnKey.getForeignField().getName()), foriegnKey.getId());
+    private static <T> Predicate getForiegnKeyEqual(ForeignKey<T> foreignKey, Root e, CriteriaBuilder cb) {
+        return cb.equal(e.get(foreignKey.getForeignField().getName()), foreignKey.getId());
     }
 
     public static <T> Specification<T> getFilterSpecification(final Class<T> domainType,
-                                                              final T filterInstance, List<String> visibleProperties, @NotNull ForiegnKey<T> foriegnKey) {
+                                                              final T filterInstance, List<String> visibleProperties, @NotNull ForeignKey<T> foreignKey) {
         return (Specification<T>) (e, cq, cb) -> {
             if (filterInstance != null) {
                 Predicate[] predicates = visibleProperties.stream()
@@ -86,9 +86,9 @@ public class RepoSpecificationFactory {
                         .filter(Objects::nonNull)
                         .toArray(Predicate[]::new);
 
-                return cb.and(predicates.length == 1 ? predicates[0] : cb.and(predicates), getForiegnKeyEqual(foriegnKey, e, cb));
+                return cb.and(predicates.length == 1 ? predicates[0] : cb.and(predicates), getForiegnKeyEqual(foreignKey, e, cb));
             } else {
-                return getForiegnKeyEqual(foriegnKey, e, cb);
+                return getForiegnKeyEqual(foreignKey, e, cb);
             }
         };
     }

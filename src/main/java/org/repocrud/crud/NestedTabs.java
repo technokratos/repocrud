@@ -49,7 +49,7 @@ public class NestedTabs<T> extends Composite<Div> implements SelectionListener<G
     private final TabContainer tabs = new TabContainer(Tabs.Orientation.HORIZONTAL);
     private final Class<T> parentType;
     private final List<Field> fieldStream;
-    private final Map<Field, Consumer<ForiegnKey>> fieldSelectListeners = new HashMap<>();
+    private final Map<Field, Consumer<ForeignKey>> fieldSelectListeners = new HashMap<>();
     private final Map<String, RepositoryCrud> crudMap = new HashMap<>();
 
     public NestedTabs(Class<T> parentType, List<String> visibleProperties) {
@@ -89,8 +89,8 @@ public class NestedTabs<T> extends Composite<Div> implements SelectionListener<G
             if (!optionalNestedEntity.isPresent() || optionalNestedEntity.get().view() == NestedView.CRUD) {
                 RepositoryCrudFormFactory crudFormFactory = new RepositoryCrudFormFactory<>(nestedType);
                 crudFormFactory.hideVisibleProperties(foreignField.getName());
-                ForiegnKey foriegnKey = new ForiegnKey(null, foreignField, null);
-                RepositoryCrud crud = new RepositoryCrud(repository, crudFormFactory, foriegnKey);
+                ForeignKey foreignKey = new ForeignKey(null, foreignField, null);
+                RepositoryCrud crud = new RepositoryCrud(repository, crudFormFactory, foreignKey);
                 crudMap.put(field.getName(), crud);
                 CrudLayout layout = crud.getCrudLayout();
                 fieldSelectListeners.put(field, fKey -> {
@@ -125,7 +125,7 @@ public class NestedTabs<T> extends Composite<Div> implements SelectionListener<G
         return crudMap.get(property);
     }
 
-    private List saveFindByDescription(JpaRepository repository, ForiegnKey description) {
+    private List saveFindByDescription(JpaRepository repository, ForeignKey description) {
         try {
             JpaSpecificationExecutor specificationExecutor = (JpaSpecificationExecutor) repository;
             return specificationExecutor.findAll((Specification) (e, cq, cb) -> cb.equal(e.get(description.getForeignField().getName()), description.getId()));
@@ -153,8 +153,8 @@ public class NestedTabs<T> extends Composite<Div> implements SelectionListener<G
                         .map(annotation -> ((OneToMany) annotation)).findFirst().get();
                 Class type = oneToMany.targetEntity();
                 if (type != void.class) {
-                    ForiegnKey description = getNestedDescription(main, type);
-                    Consumer<ForiegnKey> foriegnKeyConsumer = fieldSelectListeners.get(field);
+                    ForeignKey description = getNestedDescription(main, type);
+                    Consumer<ForeignKey> foriegnKeyConsumer = fieldSelectListeners.get(field);
                     if (foriegnKeyConsumer != null) {
                         foriegnKeyConsumer.accept(description);
                     } else {
@@ -224,7 +224,7 @@ public class NestedTabs<T> extends Composite<Div> implements SelectionListener<G
 //        return Arrays.asList(link, unlink);
 //    }
 
-    public ForiegnKey getNestedDescription(T main, Class type) {
+    public ForeignKey getNestedDescription(T main, Class type) {
         try {
             Object exampleFilter = type.newInstance();
             //newInstance;;
@@ -233,7 +233,7 @@ public class NestedTabs<T> extends Composite<Div> implements SelectionListener<G
 
             foreignField.set(exampleFilter, main);
             UUID id = main instanceof Identified ? ((Identified) main).getId() : null;
-            return new ForiegnKey(exampleFilter, foreignField, id);
+            return new ForeignKey(exampleFilter, foreignField, id);
         } catch (InstantiationException | IllegalAccessException e) {
             log.error("Error in new instance ", e);
             throw new IllegalStateException("Error in new instance", e);
