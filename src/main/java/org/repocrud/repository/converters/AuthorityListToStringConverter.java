@@ -1,14 +1,12 @@
 package org.repocrud.repository.converters;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 /**
  * Created by study on 11/15/14.

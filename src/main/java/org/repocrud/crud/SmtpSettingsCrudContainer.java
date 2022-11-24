@@ -6,6 +6,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+import java.util.UUID;
 import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.repocrud.domain.SmtpSettings;
@@ -22,7 +23,7 @@ import static org.repocrud.text.LocalText.text;
 @Slf4j
 @UIScope
 @SpringComponent
-public class SmtpSettingsCrudContainer extends AbstractCrudContainer<SmtpSettings, Long> {
+public class SmtpSettingsCrudContainer extends AbstractCrudContainer<SmtpSettings, UUID> {
 
     @Autowired
     private SmtpSettingsRepository repository;

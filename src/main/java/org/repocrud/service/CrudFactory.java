@@ -1,8 +1,7 @@
 package org.repocrud.service;
 
-import org.repocrud.crud.RepositoryCrud;
-
 import java.util.List;
+import org.repocrud.crud.RepositoryCrud;
 
 /**
  * @author Denis B. Kulikov<br/>

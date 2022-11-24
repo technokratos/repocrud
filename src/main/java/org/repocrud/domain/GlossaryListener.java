@@ -1,10 +1,9 @@
 package org.repocrud.domain;
 
-import org.repocrud.text.LocalText;
-import org.springframework.stereotype.Component;
-
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import org.repocrud.text.LocalText;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Denis B. Kulikov<br/>

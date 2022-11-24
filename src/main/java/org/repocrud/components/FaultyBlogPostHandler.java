@@ -6,7 +6,6 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.ErrorParameter;
 import com.vaadin.flow.router.HasErrorParameter;
-
 import javax.servlet.http.HttpServletResponse;
 
 @Tag(Tag.DIV)

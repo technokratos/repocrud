@@ -1,9 +1,8 @@
 package org.repocrud.text;
 
-import org.repocrud.domain.Language;
 import com.vaadin.flow.component.UI;
-
 import java.util.Locale;
+import org.repocrud.domain.Language;
 
 /**
  * @author Denis B. Kulikov<br/>

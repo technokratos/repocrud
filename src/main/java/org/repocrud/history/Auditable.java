@@ -1,19 +1,22 @@
 package org.repocrud.history;
 
-import org.repocrud.components.Identifiable;
-import org.repocrud.domain.Company;
-import org.repocrud.domain.User;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import java.time.ZonedDateTime;
+import java.util.Objects;
+import javax.persistence.EntityListeners;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
+import org.repocrud.domain.Company;
+import org.repocrud.domain.User;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-
-import javax.persistence.*;
-import java.time.ZonedDateTime;
-import java.util.Objects;
 
 @Getter
 @Setter

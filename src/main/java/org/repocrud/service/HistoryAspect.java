@@ -1,34 +1,33 @@
 package org.repocrud.service;
 
 
-import org.repocrud.config.SecurityUtils;
-import org.repocrud.domain.CrudHistory;
-import org.repocrud.domain.User;
-import org.repocrud.history.Auditable;
-import org.repocrud.repository.CrudHistoryRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
-import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.authentication.RememberMeAuthenticationToken;
-import org.springframework.stereotype.Component;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.repocrud.config.SecurityUtils;
+import org.repocrud.domain.CrudHistory;
+import org.repocrud.domain.User;
+import org.repocrud.history.Auditable;
+import org.repocrud.repository.CrudHistoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.RememberMeAuthenticationToken;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @Aspect

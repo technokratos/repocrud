@@ -1,5 +1,6 @@
 package org.repocrud.repository;
 
+import java.util.List;
 import org.repocrud.config.SecurityUtils;
 import org.repocrud.domain.Company;
 import org.repocrud.domain.User;
@@ -10,8 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
-
-import java.util.List;
 
 /**
  * @author Denis B. Kulikov<br/>

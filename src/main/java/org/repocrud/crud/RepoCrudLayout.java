@@ -14,11 +14,10 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.dom.Element;
-import org.vaadin.crudui.crud.CrudOperation;
-import org.vaadin.crudui.layout.CrudLayout;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.vaadin.crudui.crud.CrudOperation;
+import org.vaadin.crudui.layout.CrudLayout;
 
 import static org.repocrud.text.LocalText.text;
 

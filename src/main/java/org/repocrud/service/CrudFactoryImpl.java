@@ -1,5 +1,6 @@
 package org.repocrud.service;
 
+import java.util.List;
 import org.repocrud.crud.RepositoryCrud;
 import org.repocrud.crud.RepositoryCrudFormFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +8,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @author Denis B. Kulikov<br/>

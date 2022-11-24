@@ -6,9 +6,8 @@ import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.shared.Registration;
-import org.apache.commons.lang3.StringUtils;
-
 import java.time.LocalTime;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Denis B. Kulikov<br/>

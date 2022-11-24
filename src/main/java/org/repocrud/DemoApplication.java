@@ -8,7 +8,6 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -23,8 +22,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaAuditing
 @SpringBootApplication(exclude = {
         DataSourceAutoConfiguration.class,
-        MultipartAutoConfiguration.class,// excluded so that the application uses commons-fileupload instead of Servlet 3 Multipart support
-        FlywayAutoConfiguration.class
+        MultipartAutoConfiguration.class// excluded so that the application uses commons-fileupload instead of Servlet 3 Multipart support
 })
 @EnableTransactionManagement
 @EntityScan(basePackages = { "org.repocrud.domain" })

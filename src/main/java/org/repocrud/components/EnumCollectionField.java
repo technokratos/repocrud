@@ -1,23 +1,25 @@
 package org.repocrud.components;
 
-import org.repocrud.annotations.CheckBoxCollection;
-import org.repocrud.repository.CommonRepository;
-import org.repocrud.service.ApplicationContextProvider;
-import com.vaadin.flow.component.*;
+import com.vaadin.flow.component.AbstractField;
+import com.vaadin.flow.component.HasValueAndElement;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.shared.Registration;
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.hibernate.collection.internal.PersistentBag;
+import org.repocrud.annotations.CheckBoxCollection;
+import org.repocrud.repository.CommonRepository;
+import org.repocrud.service.ApplicationContextProvider;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.repocrud.text.LocalText.text;
 

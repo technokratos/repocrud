@@ -1,9 +1,6 @@
 package org.repocrud.crud;
 
 import com.vaadin.flow.component.AbstractField;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Span;
-
 import java.util.Collection;
 
 

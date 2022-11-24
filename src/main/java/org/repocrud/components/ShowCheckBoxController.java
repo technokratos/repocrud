@@ -7,7 +7,6 @@ import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.shared.Registration;
-
 import java.util.stream.Stream;
 
 /**

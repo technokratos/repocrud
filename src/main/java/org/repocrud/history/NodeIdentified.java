@@ -1,12 +1,14 @@
 package org.repocrud.history;
 
-import org.repocrud.components.Identifiable;
+import java.util.Objects;
+import javax.persistence.EmbeddedId;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
-import java.util.Objects;
+import org.repocrud.components.Identifiable;
 
 /**
  * @author Denis B. Kulikov<br/>

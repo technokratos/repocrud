@@ -1,14 +1,14 @@
 package org.repocrud.history;
 
-import org.repocrud.components.Identifiable;
-import lombok.Getter;
-import lombok.Setter;
-
+import java.util.Objects;
+import java.util.UUID;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 /**
  * @author Denis B. Kulikov<br/>
@@ -17,10 +17,12 @@ import java.util.Objects;
 @Getter
 @Setter
 @MappedSuperclass
-public class Identified implements Identifiable<Long> {
+public class Identified  {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    protected Long id;
+    @Type(type="uuid-char")
+    @GeneratedValue(generator = "presetIdGenerator")
+    @GenericGenerator(name = "presetIdGenerator", strategy = "org.repocrud.history.UUIDPresetIdGenerator")
+    protected UUID id;
 
 
     @Override
@@ -37,3 +39,4 @@ public class Identified implements Identifiable<Long> {
         return Objects.hash(id);
     }
 }
+

@@ -1,16 +1,14 @@
 package org.repocrud.domain;
 
-import org.repocrud.history.Auditable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.validation.Constraint;
-import javax.validation.constraints.NotNull;
+import org.repocrud.history.Auditable;
 
 import static java.lang.String.format;
 

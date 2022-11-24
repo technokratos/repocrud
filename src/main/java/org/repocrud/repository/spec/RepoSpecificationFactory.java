@@ -1,20 +1,22 @@
 package org.repocrud.repository.spec;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.Objects;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.validation.constraints.NotNull;
+import lombok.extern.slf4j.Slf4j;
 import org.repocrud.config.SecurityUtils;
 import org.repocrud.crud.ForiegnKey;
 import org.repocrud.domain.Company;
 import org.repocrud.domain.User;
 import org.repocrud.history.Auditable;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.jpa.domain.Specification;
-
-import javax.persistence.criteria.*;
-import javax.validation.constraints.NotNull;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * @author Denis B. Kulikov<br/>

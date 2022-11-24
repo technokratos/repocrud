@@ -1,5 +1,6 @@
 package org.repocrud.repository;
 
+import java.util.UUID;
 import org.repocrud.config.SecurityUtils;
 import org.repocrud.domain.Glossary;
 import org.repocrud.domain.Language;
@@ -9,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GlossaryRepository extends JpaRepository<Glossary, Long>, JpaSpecificationExecutor<Glossary> {
+public interface GlossaryRepository extends JpaRepository<Glossary, UUID>, JpaSpecificationExecutor<Glossary> {
 
 
     Glossary findByLanguageAndKey(Language language, String key);

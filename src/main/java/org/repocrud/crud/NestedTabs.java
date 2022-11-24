@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -231,7 +232,7 @@ public class NestedTabs<T> extends Composite<Div> implements SelectionListener<G
             Field foreignField = getForeignField(type);
 
             foreignField.set(exampleFilter, main);
-            Long id = main instanceof Identified ? ((Identified) main).getId() : null;
+            UUID id = main instanceof Identified ? ((Identified) main).getId() : null;
             return new ForiegnKey(exampleFilter, foreignField, id);
         } catch (InstantiationException | IllegalAccessException e) {
             log.error("Error in new instance ", e);

@@ -1,7 +1,7 @@
 package org.repocrud.components.dialogs;
 
 
-import com.vaadin.flow.component.*;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;

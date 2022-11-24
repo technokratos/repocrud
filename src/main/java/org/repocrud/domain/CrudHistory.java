@@ -1,15 +1,18 @@
 package org.repocrud.domain;
 
+import java.time.ZonedDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
-import org.vaadin.crudui.crud.CrudOperation;
-
-import javax.persistence.*;
-import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
-import java.util.Date;
 
 /**
  * @author Denis B. Kulikov<br/>

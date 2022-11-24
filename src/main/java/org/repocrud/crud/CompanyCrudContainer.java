@@ -1,21 +1,21 @@
 package org.repocrud.crud;
 
-import org.repocrud.config.SecurityUtils;
-import org.repocrud.repository.CompanyRepository;
-import org.repocrud.domain.Company;
-import org.repocrud.domain.User;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.PostConstruct;
 import java.util.Arrays;
+import java.util.UUID;
+import javax.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
+import org.repocrud.config.SecurityUtils;
+import org.repocrud.domain.Company;
+import org.repocrud.domain.User;
+import org.repocrud.repository.CompanyRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 @UIScope
 @SpringComponent
-public class CompanyCrudContainer extends AbstractCrudContainer<Company, Long> {
+public class CompanyCrudContainer extends AbstractCrudContainer<Company, UUID> {
 
     @Autowired
     private CompanyRepository repository;

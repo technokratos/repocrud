@@ -1,19 +1,15 @@
 package org.repocrud.tools;
 
+import java.nio.charset.Charset;
+import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.buf.HexUtils;
 import org.springframework.security.crypto.codec.Hex;
-
-import javax.crypto.*;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
-import java.nio.charset.Charset;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.Objects;
 
 import static org.apache.commons.lang3.math.NumberUtils.min;
 

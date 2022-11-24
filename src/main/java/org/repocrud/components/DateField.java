@@ -6,9 +6,8 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.shared.Registration;
-import lombok.extern.slf4j.Slf4j;
-
 import java.time.LocalDate;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Denis B. Kulikov<br/>

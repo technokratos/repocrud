@@ -1,14 +1,5 @@
 package org.repocrud.repository;
 
-import org.repocrud.annotations.CheckBoxCollection;
-import org.repocrud.service.ApplicationContextProvider;
-import org.hibernate.collection.internal.PersistentBag;
-import org.springframework.beans.BeanUtils;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.repository.NoRepositoryBean;
-
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -16,6 +7,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import org.hibernate.collection.internal.PersistentBag;
+import org.repocrud.annotations.CheckBoxCollection;
+import org.repocrud.service.ApplicationContextProvider;
+import org.springframework.beans.BeanUtils;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.NoRepositoryBean;
 
 /**
  * @author Denis B. Kulikov<br/>

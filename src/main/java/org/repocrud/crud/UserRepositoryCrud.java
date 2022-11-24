@@ -15,6 +15,7 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import java.util.Collections;
 import java.util.Set;
+import java.util.UUID;
 import javax.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,7 @@ import static org.repocrud.text.LocalText.text;
 @Slf4j
 @UIScope
 @SpringComponent
-public class UserRepositoryCrud extends AbstractCrudContainer<User, Long> {
+public class UserRepositoryCrud extends AbstractCrudContainer<User, UUID> {
 
     public static final int DURATION = 1000;
     public static final String[] HIDE_FIELDS = { "id", "password", "authorities", "locale", "accountNonExpired", "accountNonLocked", "credentialsNonExpired" };
@@ -104,12 +105,12 @@ public class UserRepositoryCrud extends AbstractCrudContainer<User, Long> {
         }
     }
 
-    private void initHistory(RepositoryCrud<User, Long> crud) {
+    private void initHistory(RepositoryCrud<User, UUID> crud) {
         RepositoryCrudFormFactory<CrudHistory> historyFormFactory = new RepositoryCrudFormFactory<>(CrudHistory.class);
 
 
         historyFormFactory.hideVisibleProperties("id", "body");
-        RepositoryCrud<CrudHistory, Long> historyCrud = new RepositoryCrud<>(historyRepository, historyFormFactory);
+        RepositoryCrud<CrudHistory, UUID> historyCrud = new RepositoryCrud<>(historyRepository, historyFormFactory);
 
 
         historyCrud.setPageCountSupplier(() -> 0L);

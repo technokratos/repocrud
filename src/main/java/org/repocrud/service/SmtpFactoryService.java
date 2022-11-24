@@ -1,9 +1,21 @@
 package org.repocrud.service;
 
+import java.util.List;
+import java.util.Properties;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.validation.constraints.NotNull;
+import lombok.extern.slf4j.Slf4j;
 import org.repocrud.domain.Company;
 import org.repocrud.domain.SmtpSettings;
 import org.repocrud.repository.SmtpSettingsRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamSource;
@@ -13,16 +25,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Properties;
-import java.util.concurrent.*;
-import java.util.stream.Stream;
-
-import static org.repocrud.text.LocalText.text;
 
 /**
  * @author Denis B. Kulikov<br/>
@@ -34,7 +36,7 @@ import static org.repocrud.text.LocalText.text;
 public class SmtpFactoryService {
 
     private final Executor executor = Executors.newSingleThreadExecutor();
-    private final ConcurrentMap<Long, Long> lastSentTimeByCompany = new ConcurrentHashMap<>();
+    private final ConcurrentMap<UUID, Long> lastSentTimeByCompany = new ConcurrentHashMap<>();
 
     @Autowired
     private SmtpSettingsRepository smtpSettingsRepository;
@@ -85,7 +87,7 @@ public class SmtpFactoryService {
         Company company = settings.getCompany();
 
         synchronized (lastSentTimeByCompany) {
-            Long companyKey = (company != null) ? company.getId() : -1L;
+            UUID companyKey = (company != null) ? company.getId() : null;
             Long lastSent = lastSentTimeByCompany.getOrDefault(companyKey, 0L);
             long dif = System.currentTimeMillis() - lastSent;
             if (TimeUnit.MILLISECONDS.toMinutes(dif) > smtpWarningTimeoutMin) {

@@ -1,12 +1,12 @@
 package org.repocrud.domain;
 
-import org.repocrud.history.Auditable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
-
-import javax.persistence.*;
+import org.repocrud.history.Auditable;
 
 /**
  * @author Denis B. Kulikov<br/>

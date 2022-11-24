@@ -1,20 +1,19 @@
 package org.repocrud.components.filter;
 
-import org.repocrud.domain.Filter;
-import org.repocrud.repository.FilterRepository;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.repocrud.domain.Filter;
+import org.repocrud.repository.FilterRepository;
 
 /**
  * @author Denis B. Kulikov<br/>

@@ -1,7 +1,5 @@
 package org.repocrud.components.filter;
 
-import org.repocrud.components.DateTimeField;
-import org.repocrud.domain.Filter;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasValueAndElement;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -9,8 +7,6 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import lombok.extern.slf4j.Slf4j;
-
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
@@ -22,9 +18,16 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lombok.extern.slf4j.Slf4j;
+import org.repocrud.components.DateTimeField;
+import org.repocrud.domain.Filter;
 
-import static org.repocrud.domain.Filter.Operation.*;
 import static java.lang.String.format;
+import static org.repocrud.domain.Filter.Operation.AFTER;
+import static org.repocrud.domain.Filter.Operation.BEFORE;
+import static org.repocrud.domain.Filter.Operation.EQUAL;
+import static org.repocrud.domain.Filter.Operation.LIKE;
+import static org.repocrud.domain.Filter.Operation.values;
 
 /**
  * @author Denis B. Kulikov<br/>

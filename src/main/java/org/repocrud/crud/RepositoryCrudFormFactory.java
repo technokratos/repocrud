@@ -1,20 +1,25 @@
 package org.repocrud.crud;
 
-import com.vaadin.flow.component.*;
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.HasElement;
+import com.vaadin.flow.component.HasValueAndElement;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.dom.Element;
-import org.vaadin.crudui.crud.CrudOperation;
-import org.vaadin.crudui.form.CrudFormConfiguration;
-import org.vaadin.crudui.form.impl.form.factory.DefaultCrudFormFactory;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.vaadin.crudui.crud.CrudOperation;
+import org.vaadin.crudui.form.CrudFormConfiguration;
+import org.vaadin.crudui.form.impl.form.factory.DefaultCrudFormFactory;
 
 import static org.repocrud.text.LocalText.text;
 

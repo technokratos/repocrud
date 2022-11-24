@@ -5,6 +5,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import java.time.ZonedDateTime;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.PostRemove;
+import javax.persistence.PostUpdate;
+import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
+import javax.persistence.PreUpdate;
 import lombok.extern.slf4j.Slf4j;
 import org.repocrud.config.SecurityUtils;
 import org.repocrud.domain.CrudHistory;
@@ -13,11 +23,6 @@ import org.repocrud.repository.CrudHistoryRepository;
 import org.repocrud.service.ApplicationContextProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.persistence.*;
-import java.time.ZonedDateTime;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 
 @Slf4j

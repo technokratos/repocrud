@@ -1,8 +1,7 @@
 package org.repocrud.components.filter;
 
-import lombok.AllArgsConstructor;
-
 import java.lang.reflect.Field;
+import lombok.AllArgsConstructor;
 
 import static org.repocrud.text.LocalText.text;
 

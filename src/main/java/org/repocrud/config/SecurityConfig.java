@@ -2,7 +2,6 @@ package org.repocrud.config;
 
 
 import com.vaadin.flow.spring.security.VaadinWebSecurityConfigurerAdapter;
-import java.util.Arrays;
 import java.util.List;
 import org.repocrud.domain.User;
 import org.repocrud.repository.UserRepository;
@@ -21,7 +20,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 
 @EnableWebSecurity
 @Configuration
@@ -37,8 +35,6 @@ public class SecurityConfig extends VaadinWebSecurityConfigurerAdapter {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private SimpleUrlLogoutSuccessHandler logoutSuccessHandler;
 
     @Bean(value = "firstUser")
     public String initFirstUser() {

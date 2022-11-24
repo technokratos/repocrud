@@ -1,12 +1,11 @@
 package org.repocrud.crud;
 
-import org.repocrud.history.Identified;
+import java.lang.reflect.Field;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-
-import java.lang.reflect.Field;
 
 /**
  * @author Denis B. Kulikov<br/>
@@ -19,7 +18,7 @@ import java.lang.reflect.Field;
 public class ForiegnKey<T> {
     private final T filter;
     private final Field foreignField;
-    private final Long id;
+    private final UUID id;
 
     void initForeignKey(T t) {
         try {

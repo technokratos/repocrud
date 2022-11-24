@@ -1,9 +1,8 @@
 package org.repocrud.tools;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Denis B. Kulikov<br/>

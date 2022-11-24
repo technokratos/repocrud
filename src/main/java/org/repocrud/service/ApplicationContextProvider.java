@@ -1,14 +1,13 @@
 package org.repocrud.service;
 
+import java.util.Optional;
+import javax.persistence.EntityManagerFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.support.Repositories;
-
-import javax.persistence.EntityManagerFactory;
-import java.util.Optional;
 
 @Slf4j
 //@Component
